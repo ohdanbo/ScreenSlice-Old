@@ -76,6 +76,7 @@ public class mainWindow extends JFrame {
 	public static boolean threescreens = false; //only on creators computer for now, can't figure out how to get screen position on windows.
 
 	public mainWindow() {
+		username = "Danbo"; // need this line when using my laptop
 		windowsPath = "C:\\Users\\" + username + "\\Pictures\\Screenshots\\";
 		linuxPath = "//home//" + System.getProperty("user.name") + "//Pictures//Screenshots//";
 		File f = new File(windowsPath + "");
