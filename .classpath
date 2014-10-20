@@ -5,5 +5,7 @@
 	<classpathentry kind="lib" path="res"/>
 	<classpathentry kind="lib" path="commons-net-1.4.1.jar"/>
 	<classpathentry kind="lib" path="JNativeHook.jar"/>
+	<classpathentry kind="lib" path="commons-codec-1.9.jar"/>
+	<classpathentry kind="lib" path="httpclient-4.3.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
