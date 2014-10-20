@@ -156,7 +156,11 @@ public class regionSelect {
 			super.paintComponent(g);
 			Graphics2D g2d = (Graphics2D) g.create();
 			g2d.setColor(new Color(255, 255, 255, 128));
-			g2d.drawImage(image, 0, 0, (int) width, (int) height, null);
+			if(mainWindow.threescreens) {
+				g2d.drawImage(image, 0, 0, (int) width, (int) height, null);
+			} else {
+				g2d.drawImage(image, 0, 0, (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight(),null);
+			}
 			if (System.getProperty("os.name").contains("Windows")) {
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 			} else {
