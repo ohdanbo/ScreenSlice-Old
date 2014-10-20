@@ -191,13 +191,12 @@ public class mainWindow extends JFrame {
 				int row = table.rowAtPoint(new Point(e.getX(), e.getY()));
 				int col = table.columnAtPoint(new Point(e.getX(), e.getY()));
 				String url = (String) table.getModel().getValueAt(row, col);
+				String[] splitLink = url.split("'>http://");
+				String[] newLink = splitLink[1].split("</a>");
+//				System.out.println(newLink[0]);
 				if (url.contains("http://")) {
 					try {
-						if(isImgur) {
-							Desktop.getDesktop().browse(new URL(imgurLink).toURI());
-						} else {
-							Desktop.getDesktop().browse(new URL(link).toURI());
-						}
+						Desktop.getDesktop().browse(new URL("http://" + newLink[0]).toURI());
 					} catch (Exception ex) {
 					}
 				}
