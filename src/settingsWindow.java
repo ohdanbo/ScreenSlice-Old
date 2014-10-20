@@ -267,7 +267,7 @@ public class settingsWindow extends JFrame {
 		setSize(420-35,420/16*9-25);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setIconImage(new ImageIcon(getClass().getResource("screenslice.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource("icon.png")).getImage());
 		setResizable(false);
 		setVisible(true);
 		add(uploadPanel);

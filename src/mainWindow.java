@@ -67,7 +67,7 @@ public class mainWindow extends JFrame {
 	static DefaultTableModel model = new DefaultTableModel();
 	static String randomFileName = "";
 	static String randomTxtName = "";
-	public ImageIcon icon = new ImageIcon(getClass().getResource("test.png"));
+	public ImageIcon icon = new ImageIcon(getClass().getResource("icon.png"));
 	static boolean uploaded = false;
 	public static TrayIcon tray;
 	static String link;
@@ -369,7 +369,7 @@ public class mainWindow extends JFrame {
 			}
 		});
 		try {
-			BufferedImage trayIconImage = ImageIO.read(getClass().getResource("test.png"));
+			BufferedImage trayIconImage = ImageIO.read(getClass().getResource("icon.png"));
 			int trayIconWidth = new TrayIcon(trayIconImage).getSize().width;
 			TrayIcon trayIcon = new TrayIcon(trayIconImage.getScaledInstance(trayIconWidth, -1, Image.SCALE_SMOOTH));
 			tray = new TrayIcon(trayIcon.getImage(), "ScreenSlice", menu);
