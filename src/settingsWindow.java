@@ -221,21 +221,22 @@ public class settingsWindow extends JFrame {
 		});
 		uploadPanel.add(cancel);
 				
-		//-------------------------------Local panel-------------------------------//
+		//-------------------------------Imgur panel-------------------------------//
 		
-		JLabel localLbl = new JLabel("<html><u>Local Settings</u></html>");
+		/*JLabel localLbl = new JLabel("<html><u>Imgur Settings</u></html>");
 		localLbl.setBounds(5,0,110,25);
 		try {localLbl.setFont(new customButton("","").defaultFont());} catch (Exception e2) {}
 		localPanel.add(localLbl);
 		
-		JLabel localPathLbl = new JLabel("Local path: ");
-		localPathLbl.setBounds(5, 30, 275, 25);
-		try {localPathLbl.setFont(new customButton("","").defaultFont());} catch (Exception e2) {}
-		localPanel.add(localPathLbl);
+		JLabel imgurUsrLbl = new JLabel("Imgur username: ");
+		imgurUsrLbl.setBounds(5, 30, 275, 25);
+		try {imgurUsrLbl.setFont(new customButton("","").defaultFont());} catch (Exception e2) {}
+		localPanel.add(imgurUsrLbl);
 		
-		final JTextField localPath = new JTextField();
-		localPath.setBounds(70, 30, 180, 25);
-		localPanel.add(localPath);
+		
+		final JTextField imgurUsr = new JTextField();
+		imgurUsr.setBounds(70, 30, 180, 25);
+		localPanel.add(imgurUsr);
 		
 		JButton saveLocal = new JButton("Save");
 		saveLocal.setBounds(110, 60, 70, 25);
@@ -259,7 +260,7 @@ public class settingsWindow extends JFrame {
 				dispose();
 			}
 		});
-		localPanel.add(cancelLocal);
+		localPanel.add(cancelLocal);*/
 		
 		//-------------------------------------------------------------------------//
 		
