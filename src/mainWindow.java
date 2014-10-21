@@ -13,6 +13,7 @@ import java.awt.Robot;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.TrayIcon.MessageType;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
@@ -68,12 +69,13 @@ public class mainWindow extends JFrame {
 	static String randomFileName = "";
 	static String randomTxtName = "";
 	public ImageIcon icon = new ImageIcon(getClass().getResource("icon.png"));
-	static boolean uploaded = false;
+	public static boolean uploaded = false;
 	public static TrayIcon tray;
-	static String link;
+	public static String link;
 	public static String imgurLink;
 	public static boolean isImgur = true; //true by default because most people don't have an ftp server.
 	public static boolean threescreens = false; //only on creators computer for now, can't figure out how to get screen position on windows.
+	public static String address;
 
 	public mainWindow() {
 		username = "Danbo"; // need this line when using my laptop
@@ -119,19 +121,12 @@ public class mainWindow extends JFrame {
 						txt.write(data);
 						if (txt != null)
 							txt.close();
-						uploadFile(randomName + ".txt");
-						File f = new File(path + randomName + ".txt");
-						int fileSize = (int) f.length();
-						if(isImgur) {
-							return;
-						} else {
-							link = "http://" + hostStr + uploadDir + randomName + ".txt";							
-							model.insertRow(0, new Object[] { randomName + ".txt", fileSize / 1024 + "KB", "<html><a href='" + link + "'>" + link + "</a></html>" });
-						}
-						
+						uploadFile(randomName + ".txt", data);						
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+				} else {
+					return;
 				}
 			}
 
@@ -374,6 +369,19 @@ public class mainWindow extends JFrame {
 			TrayIcon trayIcon = new TrayIcon(trayIconImage.getScaledInstance(trayIconWidth, -1, Image.SCALE_SMOOTH));
 			tray = new TrayIcon(trayIcon.getImage(), "ScreenSlice", menu);
 			sysTray.add(tray);
+			
+			tray.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try{
+						if(isImgur) {
+							Desktop.getDesktop().browse(new URL(imgurUpload.newLink).toURI());
+						} else {
+							Desktop.getDesktop().browse(new URL(address).toURI());
+						}
+					}catch (Exception ex) {}
+				}
+			});
+			
 			tray.addMouseListener(new MouseListener() {
 				public void mousePressed(MouseEvent e) {
 					if (e.getClickCount() >= 2) {
@@ -449,7 +457,7 @@ public class mainWindow extends JFrame {
 			Thread uploadThread = new Thread(new Runnable() {
 				public void run() {
 					try {
-						uploadFile(randomName);
+						uploadFile(randomName, "");
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -459,48 +467,62 @@ public class mainWindow extends JFrame {
 		}
 	}
 
-	public static void uploadFile(final String randomName) throws Exception {
-		if(isImgur) {
-			Thread imgurThread = new Thread(new Runnable() {
+	public static void uploadFile(final String randomName, String data) throws Exception {
+		if (randomName.contains(".txt")) {
+			Thread pasteBinThread = new Thread(new Runnable() {
 				public void run() {
 					try {
-						new imgurUpload(randomName);
+						new pastebinUpload(data);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
 			});
-			imgurThread.start();
-			
+			pasteBinThread.start();
 		} else {
-			FTPClient ftp = new FTPClient();
-			int reply;
-			ftp.connect(hostStr);
-			reply = ftp.getReplyCode();
-			if (!FTPReply.isPositiveCompletion(reply)) {
+			if(isImgur) {
+				Thread imgurThread = new Thread(new Runnable() {
+					public void run() {
+						try {
+							new imgurUpload(randomName);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+				imgurThread.start();
+				
+			} else {
+				FTPClient ftp = new FTPClient();
+				int reply;
+				ftp.connect(hostStr);
+				reply = ftp.getReplyCode();
+				if (!FTPReply.isPositiveCompletion(reply)) {
+					ftp.disconnect();
+					throw new Exception("Exception in connecting to FTP Server");
+				}
+				ftp.login(userStr, passStr);
+				ftp.setFileType(FTP.BINARY_FILE_TYPE);
+				ftp.enterLocalPassiveMode();
+		
+				try (InputStream input = new FileInputStream(new File(checkOSName() + randomName))) {
+					ftp.makeDirectory(uploadDir);
+					ftp.storeFile(uploadDir + randomName, input);
+				} catch (Exception e){
+					e.printStackTrace();
+				}
+				ftp.logout();
 				ftp.disconnect();
-				throw new Exception("Exception in connecting to FTP Server");
+				address = "http://" + hostStr + uploadDir + randomName;
+				StringSelection stringSelection = new StringSelection(address);
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				clipboard.setContents(stringSelection, null);
+				tray.displayMessage("Successfully uploaded!", "Image Uploaded, URL has been copied to clipboard.", MessageType.INFO);
+//				JOptionPane.showMessageDialog(null, "File uploaded! Address has been copied to clipboard.", "Success!", JOptionPane.INFORMATION_MESSAGE);
+				File f = new File(checkOSName() + randomName);
+				link = "http://" + hostStr + uploadDir + randomName;
+				model.insertRow(0, new Object[] { randomName, f.length() / 1024 + "KB", "<html><a href='" + link + "'>" + link + "</a></html>" });
 			}
-			ftp.login(userStr, passStr);
-			ftp.setFileType(FTP.BINARY_FILE_TYPE);
-			ftp.enterLocalPassiveMode();
-	
-			try (InputStream input = new FileInputStream(new File(checkOSName() + randomName))) {
-				ftp.makeDirectory(uploadDir);
-				ftp.storeFile(uploadDir + randomName, input);
-			} catch (Exception e){
-				e.printStackTrace();
-			}
-			ftp.logout();
-			ftp.disconnect();
-			String address = "http://" + hostStr + uploadDir + randomName;
-			StringSelection stringSelection = new StringSelection(address);
-			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-			clipboard.setContents(stringSelection, null);
-			JOptionPane.showMessageDialog(null, "File uploaded! Address has been copied to clipboard.", "Success!", JOptionPane.INFORMATION_MESSAGE);
-			File f = new File(checkOSName() + randomFileName);
-			link = "http://" + hostStr + uploadDir + randomFileName;
-			model.insertRow(0, new Object[] { randomFileName, f.length() / 1024 + "KB", "<html><a href='" + link + "'>" + link + "</a></html>" });
 		}
 	}
 

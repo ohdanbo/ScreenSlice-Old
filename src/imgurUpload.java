@@ -1,4 +1,6 @@
+import java.awt.Desktop;
 import java.awt.Toolkit;
+import java.awt.TrayIcon.MessageType;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
@@ -11,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
@@ -19,7 +22,10 @@ import javax.swing.Timer;
 
 import org.apache.commons.codec.binary.Base64OutputStream;
 
+import com.sun.jndi.toolkit.url.Uri;
+
 public class imgurUpload {
+	public static String newLink;
 	public imgurUpload(String randName) {
 		try {
 			String response = imageToString(mainWindow.checkOSName() + randName);
@@ -31,13 +37,14 @@ public class imgurUpload {
 					response.lastIndexOf("\"http") + 1,
 					response.lastIndexOf(".png"))
 					+ ".png";
-			String newLink = link.replaceAll("\\\\", "");
+			newLink = link.replaceAll("\\\\", "");
 			mainWindow.imgurLink = newLink;
 			String[] parts = newLink.split("m/");
 			String name = parts[1];
-			JOptionPane.showMessageDialog(null,
+			mainWindow.tray.displayMessage("Successfully uploaded!", "Image Uploaded, URL has been copied to clipboard.", MessageType.INFO);
+/*			JOptionPane.showMessageDialog(null,
 					"File uploaded! Address has been copied to clipboard.",
-					"Success!", JOptionPane.INFORMATION_MESSAGE);
+					"Success!", JOptionPane.INFORMATION_MESSAGE);*/
 			mainWindow.model.insertRow(0, new Object[] {
 					name,
 					imgSize + "KB",

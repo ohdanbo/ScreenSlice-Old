@@ -61,7 +61,7 @@ public class hotKeys implements NativeKeyListener {
 				if(mainWindow.isImgur) {
 					new imgurUpload(randomName);
 				} else {
-					mainWindow.uploadFile(randomName);
+					mainWindow.uploadFile(randomName,"");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

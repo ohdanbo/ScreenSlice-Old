@@ -194,7 +194,7 @@ public class regionSelect {
 			Thread uploadThread = new Thread(new Runnable() {
 				public void run() {
 					try {
-						mainWindow.uploadFile(randomName);
+						mainWindow.uploadFile(randomName,"");
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
