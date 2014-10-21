@@ -262,7 +262,7 @@ public class settingsWindow extends JFrame {
 		});
 		localPanel.add(cancelLocal);*/
 		
-		//-------------------------------------------------------------------------///
+		//-------------------------------------------------------------------------////
 		
 		setTitle("ScreenSlice - Settings");
 		setSize(420-35,420/16*9-25);
