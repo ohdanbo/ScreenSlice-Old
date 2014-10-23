@@ -61,6 +61,7 @@ public class mainWindow extends JFrame {
 	public static String passStr = null;
 	public static String uploadDir = null;
 	public static String versionStr = null;
+	public static String imgurOrFTP = null;
 	public static String versionID = "1.1";
 	public static String username = System.getProperty("user.name");
 	public static String windowsPath;
@@ -73,7 +74,7 @@ public class mainWindow extends JFrame {
 	public static TrayIcon tray;
 	public static String link;
 	public static String imgurLink;
-	public static boolean isImgur = true; //true by default because most people don't have an ftp server.
+	public static boolean isImgur; //true by default because most people don't have an ftp server.
 	public static boolean threescreens = false; //only on creators computer for now, can't figure out how to get screen position on windows.
 	public static String address;
 
@@ -333,7 +334,7 @@ public class mainWindow extends JFrame {
 		setIconImage(icon.getImage());
 		setDefaultCloseOperation(HIDE_ON_CLOSE);//CHANGE ME TO HIDE_ON_CLOSE!!!!
 		setResizable(false);
-		setVisible(true);
+		setVisible(false);
 		setBackground(Color.WHITE);
 		add(panel);
 	}
@@ -341,6 +342,35 @@ public class mainWindow extends JFrame {
 	public void trayIcon() {
 		SystemTray sysTray = SystemTray.getSystemTray();
 		PopupMenu menu = new PopupMenu();
+		MenuItem screenshot = new MenuItem("Screenshot");
+		screenshot.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					setVisible(false);
+					randomNameGenerator();
+					String randomName = randomFileName;
+					takeTrayScreenshot(randomName);
+					setVisible(false);
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		menu.add(screenshot);
+		MenuItem region = new MenuItem("Region");
+		region.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					randomNameGenerator();
+					String randomName = randomFileName;
+					regionTrayScreenshot(randomName);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		menu.add(region);
 		MenuItem item2 = new MenuItem("Show");
 		item2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -442,6 +472,27 @@ public class mainWindow extends JFrame {
 		File f = new File(checkOSName() + "tempShot.png");
 		new regionSelect(f);
 	}
+	
+	public static void regionTrayScreenshot(final String randomName) throws Exception {
+		if(threescreens) {
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			GraphicsDevice[] screens = ge.getScreenDevices();
+			Rectangle allScreenBounds = new Rectangle();
+			for (GraphicsDevice screen : screens) {
+				Rectangle screenBounds = screen.getDefaultConfiguration().getBounds();
+				allScreenBounds.width += screenBounds.width;
+				allScreenBounds.height = Math.max(allScreenBounds.height, screenBounds.height);
+				BufferedImage screenShot = new Robot().createScreenCapture(new Rectangle((int) allScreenBounds.getX() - 1280, (int) allScreenBounds.getY(), allScreenBounds.width, allScreenBounds.height));
+				ImageIO.write(screenShot, "png", new File(checkOSName() + "tempShot.png"));
+			}
+		} else {
+			Thread.sleep(300);
+			BufferedImage screenShot = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+			ImageIO.write(screenShot, "png", new File(checkOSName() + "tempShot.png"));
+		}
+		File f = new File(checkOSName() + "tempShot.png");
+		new regionSelect(f);
+	}
 
 	public void takeScreenshot(final String randomName) throws Exception {
 		setVisible(false);
@@ -450,6 +501,28 @@ public class mainWindow extends JFrame {
 		ImageIO.write(image, "png", new File(checkOSName() + randomName));
 		File f = new File(checkOSName() + randomFileName);
 		setVisible(true);
+		
+		if (hostStr == null || userStr == null || passStr == null) {
+			JOptionPane.showMessageDialog(null, "Go to settings to enter FTP information!", "FTP Error!", JOptionPane.ERROR_MESSAGE);
+		} else {
+			Thread uploadThread = new Thread(new Runnable() {
+				public void run() {
+					try {
+						uploadFile(randomName, "");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			uploadThread.start();
+		}
+	}
+	
+	public void takeTrayScreenshot(final String randomName) throws Exception {
+		Thread.sleep(400);
+		BufferedImage image = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+		ImageIO.write(image, "png", new File(checkOSName() + randomName));
+		File f = new File(checkOSName() + randomFileName);
 		
 		if (hostStr == null || userStr == null || passStr == null) {
 			JOptionPane.showMessageDialog(null, "Go to settings to enter FTP information!", "FTP Error!", JOptionPane.ERROR_MESSAGE);
@@ -529,21 +602,31 @@ public class mainWindow extends JFrame {
 	public static void loadInfo() throws Exception {
 		File createDirectories = new File(checkOSName() + "//ScreenSlice Files//");
 		createDirectories.mkdirs();
+		File makeFile = new File(checkOSName() + "//ScreenSlice Files//imgurOrFTP.txt");
+		makeFile.createNewFile();
 		BufferedReader hostReader = new BufferedReader(new FileReader(checkOSName() + "//ScreenSlice Files//" + "host.txt"));
 		BufferedReader userReader = new BufferedReader(new FileReader(checkOSName() + "//ScreenSlice Files//" + "user.txt"));
 		BufferedReader passReader = new BufferedReader(new FileReader(checkOSName() + "//ScreenSlice Files//" + "pass.txt"));
 		BufferedReader uploadDirFile = new BufferedReader(new FileReader(checkOSName() + "//ScreenSlice Files//" + "uploadDir.txt"));
+		BufferedReader readImgurOrFtp = new BufferedReader(new FileReader(checkOSName() + "//ScreenSlice Files//" + "imgurOrFTP.txt"));
 
 		hostStr = hostReader.readLine();
 		userStr = userReader.readLine();
 		passStr = passReader.readLine();
 		uploadDir = uploadDirFile.readLine();
+		imgurOrFTP = readImgurOrFtp.readLine();
+		if (imgurOrFTP.equals("imgur")) {
+			isImgur = true;
+		} else {
+			isImgur = false;
+		}
 
-		if (hostReader != null || userReader != null || passReader != null || uploadDirFile != null) {
+		if (hostReader != null || userReader != null || passReader != null || uploadDirFile != null || readImgurOrFtp != null) {
 			hostReader.close();
 			userReader.close();
 			passReader.close();
 			uploadDirFile.close();
+			readImgurOrFtp.close();
 		}
 	}
 }

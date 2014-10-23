@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 
 import javax.swing.ButtonGroup;
@@ -138,7 +139,7 @@ public class settingsWindow extends JFrame {
 		try {imgurLbl.setFont(new customButton("","").defaultFont());} catch (Exception e2) {}
 		imgurPanel.add(imgurLbl);
 		
-		JLabel uploadLbl = new JLabel("<html><u>Upload Settings</u></html>");
+		JLabel uploadLbl = new JLabel("<html><u>FTP Settings</u></html>");
 		uploadLbl.setBounds(5,0,110,25);
 		try {uploadLbl.setFont(new customButton("","").defaultFont());} catch (Exception e2) {}
 		uploadPanel.add(uploadLbl);
@@ -223,12 +224,12 @@ public class settingsWindow extends JFrame {
 				
 		//-------------------------------Imgur panel-------------------------------//
 		
-		/*JLabel localLbl = new JLabel("<html><u>Imgur Settings</u></html>");
-		localLbl.setBounds(5,0,110,25);
-		try {localLbl.setFont(new customButton("","").defaultFont());} catch (Exception e2) {}
-		localPanel.add(localLbl);
+		JLabel imgurLoginLbl = new JLabel("<html><u>Imgur Settings</u></html>");
+		imgurLoginLbl.setBounds(5,0,110,25);
+		try{imgurLoginLbl.setFont(new customButton("","").defaultFont());}catch(Exception e2){}
+		localPanel.add(imgurLoginLbl);
 		
-		JLabel imgurUsrLbl = new JLabel("Imgur username: ");
+		JLabel imgurUsrLbl = new JLabel("Username: ");
 		imgurUsrLbl.setBounds(5, 30, 275, 25);
 		try {imgurUsrLbl.setFont(new customButton("","").defaultFont());} catch (Exception e2) {}
 		localPanel.add(imgurUsrLbl);
@@ -238,8 +239,18 @@ public class settingsWindow extends JFrame {
 		imgurUsr.setBounds(70, 30, 180, 25);
 		localPanel.add(imgurUsr);
 		
+		JLabel imgurPassLbl = new JLabel("Password: ");
+		imgurPassLbl.setBounds(5, 60, 275, 25);
+		try {imgurPassLbl.setFont(new customButton("","").defaultFont());} catch (Exception e2) {}
+		localPanel.add(imgurPassLbl);
+		
+		
+		final JPasswordField imgurPass = new JPasswordField();
+		imgurPass.setBounds(70, 60, 180, 25);
+		localPanel.add(imgurPass);
+		
 		JButton saveLocal = new JButton("Save");
-		saveLocal.setBounds(110, 60, 70, 25);
+		saveLocal.setBounds(110, 90, 70, 25);
 		saveLocal.setFocusable(false);
 		try {saveLocal.setFont(new customButton("","").defaultFont());} catch (Exception e2) {}
 		saveLocal.setFocusPainted(false);
@@ -251,7 +262,7 @@ public class settingsWindow extends JFrame {
 		localPanel.add(saveLocal);
 
 		JButton cancelLocal = new JButton("Cancel");
-		cancelLocal.setBounds(181, 60, 70, 25);
+		cancelLocal.setBounds(181, 90, 70, 25);
 		cancelLocal.setFocusable(false);
 		try {cancelLocal.setFont(new customButton("","").defaultFont());} catch (Exception e2) {}
 		cancelLocal.setFocusPainted(false);
@@ -260,7 +271,7 @@ public class settingsWindow extends JFrame {
 				dispose();
 			}
 		});
-		localPanel.add(cancelLocal);*/
+		localPanel.add(cancelLocal);
 		
 		//-------------------------------------------------------------------------//
 		
@@ -277,6 +288,11 @@ public class settingsWindow extends JFrame {
 	}
 	
 	public void saveInfo() throws Exception {
+		File createDirectories = new File(mainWindow.checkOSName() + "//ScreenSlice Files//");
+		createDirectories.mkdirs();
+		if(mainWindow.isImgur) {
+			
+		}
 		String path = "";
 		if (System.getProperty("os.name").contains("Windows")) {
 			path = windowsPath;
@@ -287,17 +303,25 @@ public class settingsWindow extends JFrame {
 		BufferedWriter userFile = new BufferedWriter(new FileWriter(path + "//ScreenSlice Files//" + "user.txt"));
 		BufferedWriter passFile = new BufferedWriter(new FileWriter(path + "//ScreenSlice Files//" + "pass.txt"));
 		BufferedWriter uploadDirFile = new BufferedWriter(new FileWriter(path + "//ScreenSlice Files//" + "uploadDir.txt"));
+		BufferedWriter imgurorftpFile = new BufferedWriter(new FileWriter(path + "//ScreenSlice Files//" + "imgurOrFTP.txt"));
 
 		hostFile.write(mainWindow.hostStr);
 		userFile.write(mainWindow.userStr);
 		passFile.write(mainWindow.passStr);
 		uploadDirFile.write(mainWindow.uploadDir);
+		
+		if(mainWindow.isImgur) {
+			imgurorftpFile.write("imgur");
+		} else {
+			imgurorftpFile.write("ftp");
+		}
 
-		if (hostFile != null || userFile != null || passFile != null || uploadDirFile != null) {
+		if (hostFile != null || userFile != null || passFile != null || uploadDirFile != null || imgurorftpFile != null) {
 			hostFile.close();
 			userFile.close();
 			passFile.close();
 			uploadDirFile.close();
+			imgurorftpFile.close();
 		}
 	}
 }

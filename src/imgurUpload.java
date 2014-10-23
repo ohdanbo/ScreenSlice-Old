@@ -13,6 +13,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URI;
 import java.net.URL;
 
@@ -65,9 +67,10 @@ public class imgurUpload {
 		OutputStream b64 = new Base64OutputStream(os);
 		ImageIO.write(img, "png", b64);
 		String result = os.toString("UTF-8");
-
+		HttpURLConnection conn;
 		URL url = new URL("https://api.imgur.com/3/image");
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("25.68.246.115", 8080));
+		conn = (HttpURLConnection) url.openConnection(proxy);
 		conn.setDoOutput(true);
 		conn.setDoInput(true);
 		conn.setRequestMethod("POST");
