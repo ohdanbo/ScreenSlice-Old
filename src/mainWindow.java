@@ -36,7 +36,7 @@ public class mainWindow extends JFrame {
 	public static TrayIcon tray;
 	public static String link;
 	public static String imgurLink;
-	public static boolean isImgur; //true by default because most people don't have an ftp server.
+	public static boolean isImgur;
 	public static boolean threescreens = false; //only on creators computer for now, can't figure out how to get screen position on windows.
 	public static String address;
 

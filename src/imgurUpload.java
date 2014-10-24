@@ -69,8 +69,7 @@ public class imgurUpload {
 		String result = os.toString("UTF-8");
 		HttpURLConnection conn;
 		URL url = new URL("https://api.imgur.com/3/image");
-		Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("25.68.246.115", 8080));
-		conn = (HttpURLConnection) url.openConnection(proxy);
+		conn = (HttpURLConnection) url.openConnection();
 		conn.setDoOutput(true);
 		conn.setDoInput(true);
 		conn.setRequestMethod("POST");
