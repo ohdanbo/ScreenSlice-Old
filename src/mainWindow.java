@@ -1,4 +1,4 @@
-package GUI;
+
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.GraphicsDevice;
@@ -51,10 +51,6 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 import org.jnativehook.GlobalScreen;
 
-import Generic.regionSelect;
-import Uploaders.imgurUpload;
-import Uploaders.pastebinUpload;
-
 public class mainWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 	public static String hostStr = null;
@@ -70,7 +66,7 @@ public class mainWindow extends JFrame {
 	public static DefaultTableModel model = new DefaultTableModel();
 	public static String randomFileName = "";
 	static String randomTxtName = "";
-	public ImageIcon icon = new ImageIcon(getClass().getResource("../icon.png"));
+	public ImageIcon icon = new ImageIcon(getClass().getResource("icon.png"));
 	public static boolean uploaded = false;
 	public static TrayIcon tray;
 	public static String link;
@@ -209,7 +205,7 @@ public class mainWindow extends JFrame {
 		try {jsp.setFont(new customButton("","").defaultFont());} catch (Exception e2) {}
 		panel.add(jsp);
 		
-		customButton screenshotBtn = new customButton(" Screenshot", "../screenshot.png");
+		customButton screenshotBtn = new customButton(" Screenshot", "screenshot.png");
 		screenshotBtn.setBounds(5, 5,130, 20);
 		screenshotBtn.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent arg0) {
@@ -233,7 +229,7 @@ public class mainWindow extends JFrame {
 		});
 		panel.add(screenshotBtn);
 		
-		customButton regionBtn = new customButton(" Region", "../region.png");
+		customButton regionBtn = new customButton(" Region", "region.png");
 		regionBtn.setBounds(5, screenshotBtn.getY() + screenshotBtn.getHeight() + 2,130, 20);
 		regionBtn.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent arg0) {
@@ -261,7 +257,7 @@ public class mainWindow extends JFrame {
 		screenshotSeperator.setBounds(5, regionBtn.getY() + regionBtn.getHeight() + 2,130, (int)screenshotSeperator.getPreferredSize().getHeight());
 		panel.add(screenshotSeperator);
 		
-		customButton settingsBtn = new customButton(" Settings", "../settings.png");
+		customButton settingsBtn = new customButton(" Settings", "settings.png");
 		settingsBtn.setBounds(5,regionBtn.getY() + regionBtn.getHeight() + 5,130, 20);
 		settingsBtn.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent arg0) {
@@ -285,7 +281,7 @@ public class mainWindow extends JFrame {
 		});
 		panel.add(settingsBtn);
 		
-		customButton destsettingsBtn = new customButton(" Destination Settings", "../destinations.png");
+		customButton destsettingsBtn = new customButton(" Destination Settings", "destinations.png");
 		destsettingsBtn.setBounds(5,settingsBtn.getY() + settingsBtn.getHeight() +2, 130, 20);
 		destsettingsBtn.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent arg0) {
@@ -312,7 +308,7 @@ public class mainWindow extends JFrame {
 		settingsSeperator.setBounds(5, destsettingsBtn.getY() + destsettingsBtn.getHeight() + 2,130, (int)settingsSeperator.getPreferredSize().getHeight());
 		panel.add(settingsSeperator);
 		
-		customButton exitBtn = new customButton(" Exit", "../exit.png");
+		customButton exitBtn = new customButton(" Exit", "exit.png");
 		exitBtn.setBounds(5,destsettingsBtn.getY() + destsettingsBtn.getHeight() + 5,130, 20);
 		exitBtn.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent arg0) {
@@ -345,7 +341,7 @@ public class mainWindow extends JFrame {
 	public void trayIcon() {
 		SystemTray sysTray = SystemTray.getSystemTray();
 		final JPopupMenu jpopup = new JPopupMenu();
-	    JMenuItem screenshot = new JMenuItem("Screenshot", new ImageIcon(getClass().getResource("../screenshot.png")));
+	    JMenuItem screenshot = new JMenuItem("Screenshot", new ImageIcon(getClass().getResource("screenshot.png")));
 	    screenshot.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -360,7 +356,7 @@ public class mainWindow extends JFrame {
 			}
 	    });
 	    jpopup.add(screenshot);
-	    JMenuItem region = new JMenuItem("Region", new ImageIcon(getClass().getResource("../region.png")));
+	    JMenuItem region = new JMenuItem("Region", new ImageIcon(getClass().getResource("region.png")));
 	    region.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -374,7 +370,7 @@ public class mainWindow extends JFrame {
 	    });
 	    jpopup.add(region);
 	    jpopup.addSeparator();
-	    JMenuItem settings = new JMenuItem("Settings", new ImageIcon(getClass().getResource("../settings.png")));
+	    JMenuItem settings = new JMenuItem("Settings", new ImageIcon(getClass().getResource("settings.png")));
 	    settings.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
 	    		new settingsWindow();
@@ -382,7 +378,7 @@ public class mainWindow extends JFrame {
 	    });
 	    jpopup.add(settings);
 	    jpopup.addSeparator();
-	    JMenuItem exit = new JMenuItem("Exit", new ImageIcon(getClass().getResource("../exit.png")));
+	    JMenuItem exit = new JMenuItem("Exit", new ImageIcon(getClass().getResource("exit.png")));
 	    exit.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
 	    		GlobalScreen.unregisterNativeHook();
@@ -391,7 +387,7 @@ public class mainWindow extends JFrame {
 	    });
 	    jpopup.add(exit);
 		try {
-			BufferedImage trayIconImage = ImageIO.read(getClass().getResource("../icon.png"));
+			BufferedImage trayIconImage = ImageIO.read(getClass().getResource("icon.png"));
 			int trayIconWidth = new TrayIcon(trayIconImage).getSize().width;
 			TrayIcon trayIcon = new TrayIcon(trayIconImage.getScaledInstance(trayIconWidth, -1, Image.SCALE_SMOOTH));
 			tray = new TrayIcon(trayIcon.getImage(), "ScreenSlice", null);
@@ -527,8 +523,6 @@ public class mainWindow extends JFrame {
 		Thread.sleep(400);
 		BufferedImage image = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
 		ImageIO.write(image, "png", new File(checkOSName() + randomName));
-		File f = new File(checkOSName() + randomFileName);
-		
 		if (hostStr == null || userStr == null || passStr == null) {
 			JOptionPane.showMessageDialog(null, "Go to settings to enter FTP information!", "FTP Error!", JOptionPane.ERROR_MESSAGE);
 		} else {

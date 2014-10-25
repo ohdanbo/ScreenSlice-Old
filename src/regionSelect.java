@@ -1,4 +1,4 @@
-package Generic;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -30,8 +30,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
-import GUI.mainWindow;
 
 public class regionSelect {
 	public BufferedImage image = null;
@@ -101,7 +99,7 @@ public class regionSelect {
 
 		public CapturePane() {
 			Toolkit toolkit = Toolkit.getDefaultToolkit();
-			Image cursorImg = toolkit.getImage(getClass().getResource("../cursor.png"));
+			Image cursorImg = toolkit.getImage(getClass().getResource("cursor.png"));
 			Point point = new Point(28 / 2 + 1, 26 / 2 + 2);
 			Cursor cursor = toolkit.createCustomCursor(cursorImg, point, "Cursor");
 			setCursor(cursor);

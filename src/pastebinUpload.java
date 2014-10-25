@@ -1,4 +1,4 @@
-package Uploaders;
+
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -10,8 +10,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import javax.swing.JOptionPane;
-
-import GUI.mainWindow;
 
 public class pastebinUpload {
 	String content;

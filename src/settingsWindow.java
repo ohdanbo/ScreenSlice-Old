@@ -1,4 +1,4 @@
-package GUI;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -64,7 +64,7 @@ public class settingsWindow extends JFrame {
 		localPanel.setLayout(null);
 		localPanel.setVisible(false);
 		
-		customButton uploadSettings = new customButton(" FTP Settings", "../ftp.png");
+		customButton uploadSettings = new customButton(" FTP Settings", "ftp.png");
 		uploadSettings.setBounds(5, 5,100, 20);
 		uploadSettings.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent arg0) {
@@ -83,7 +83,7 @@ public class settingsWindow extends JFrame {
 		});
 		buttonPanel.add(uploadSettings);
 		
-		final customButton imgurSettings = new customButton(" Imgur Settings", "../imgur.png");
+		final customButton imgurSettings = new customButton(" Imgur Settings", "imgur.png");
 		imgurSettings.setBounds(5, 27, 100, 20);
 		imgurSettings.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent arg0) {
@@ -280,7 +280,7 @@ public class settingsWindow extends JFrame {
 		setSize(420-35,420/16*9-25);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setIconImage(new ImageIcon(getClass().getResource("../icon.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource("icon.png")).getImage());
 		setResizable(false);
 		setVisible(true);
 		add(uploadPanel);

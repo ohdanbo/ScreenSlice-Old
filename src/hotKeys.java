@@ -1,4 +1,4 @@
-package Generic;
+
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -12,9 +12,6 @@ import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
-
-import GUI.mainWindow;
-import Uploaders.imgurUpload;
 
 public class hotKeys implements NativeKeyListener {
 	static int i = 0;
@@ -61,7 +58,6 @@ public class hotKeys implements NativeKeyListener {
 				File file = new File(mainWindow.checkOSName() + randomName);
 				ImageIO.write(image, "png", file);
 				count++;
-				int fileSize = (int) file.length();
 				if(mainWindow.isImgur) {
 					new imgurUpload(randomName);
 				} else {

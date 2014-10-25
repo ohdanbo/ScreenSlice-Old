@@ -1,4 +1,4 @@
-package Uploaders;
+
 import java.awt.Toolkit;
 import java.awt.TrayIcon.MessageType;
 import java.awt.datatransfer.Clipboard;
@@ -16,8 +16,6 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.codec.binary.Base64OutputStream;
-
-import GUI.mainWindow;
 
 public class imgurUpload {
 	public static String newLink;
