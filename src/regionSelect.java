@@ -1,35 +1,10 @@
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.DisplayMode;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
+import java.io.*;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.*;
 
 public class regionSelect {
 	public BufferedImage image = null;
@@ -38,24 +13,13 @@ public class regionSelect {
 
 	public regionSelect(final File screenshotPath) {
 		EventQueue.invokeLater(new Runnable() {
-			@Override
+			
 			public void run() {
-				try {
-					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-				}
-				try {
-					image = ImageIO.read(screenshotPath);
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-
-//				int width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-//				int height = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-
+				try {UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());} catch (Exception ex) {}
+				try {image = ImageIO.read(screenshotPath);} catch (Exception e1) {e1.printStackTrace();}
+				
 				int width = 0;
 				int height = 0;
-				
 				if(mainWindow.threescreens) {
 					GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 					GraphicsDevice[] gs = ge.getScreenDevices();
@@ -75,19 +39,11 @@ public class regionSelect {
 				frame.add(new CapturePane());
 				frame.setAlwaysOnTop(true);
 				frame.setSize((int) width, (int) height);
+				frame.setIconImage(new ImageIcon(getClass().getResource("icon.png")).getImage());
 				frame.setUndecorated(true);
-				if(mainWindow.threescreens) {
-					frame.setLocation(-1280, 0);
-				} else {
-					frame.setLocation(0,0);
-				}
+				if(mainWindow.threescreens) {frame.setLocation(-1280, 0);} 
+				else {frame.setLocation(0,0);}
 				frame.setVisible(true);
-
-				JLabel label = new JLabel();
-				label.setBounds(0, 0, (int) width, (int) height);
-				label.setIcon(new ImageIcon(image));
-				frame.add(label);
-				fileSize = (int) screenshotPath.length();
 			}
 		});
 	}
@@ -96,8 +52,11 @@ public class regionSelect {
 		private static final long serialVersionUID = 1L;
 		private Rectangle selectionBounds;
 		private Point clickPoint;
-
+		private int mouseX, mouseY;
+		private BufferedImage enlargedPixels,selection;
+		
 		public CapturePane() {
+			try {selection = ImageIO.read(getClass().getResource("selection.png"));} catch (IOException e1) {e1.printStackTrace();}
 			Toolkit toolkit = Toolkit.getDefaultToolkit();
 			Image cursorImg = toolkit.getImage(getClass().getResource("cursor.png"));
 			Point point = new Point(28 / 2 + 1, 26 / 2 + 2);
@@ -105,14 +64,11 @@ public class regionSelect {
 			setCursor(cursor);
 			setFocusable(true);
 			MouseAdapter mouseHandler = new MouseAdapter() {
-				@Override
 				public void mouseClicked(MouseEvent e) {
 					if (SwingUtilities.isRightMouseButton(e)) {
 						frame.dispose();
 					}
 				}
-
-				@Override
 				public void mousePressed(MouseEvent e) {
 					if (SwingUtilities.isRightMouseButton(e)) {
 						frame.dispose();
@@ -121,12 +77,14 @@ public class regionSelect {
 						selectionBounds = null;
 					}
 				}
-
-				@Override
+				public void mouseMoved(MouseEvent e) {
+					mouseX = e.getPoint().x;
+					mouseY = e.getPoint().y;
+					enlargedPixels = image.getSubimage(mouseX-5, mouseY-5, 10, 10);
+					repaint();
+				}
 				public void mouseDragged(MouseEvent e) {
-					if (SwingUtilities.isRightMouseButton(e)) {
-						frame.dispose();
-					}
+					if (SwingUtilities.isRightMouseButton(e)) {frame.dispose();}
 					else {
 						Point dragPoint = e.getPoint();
 						int x = Math.min(clickPoint.x, dragPoint.x);
@@ -134,11 +92,12 @@ public class regionSelect {
 						int width = Math.max(clickPoint.x - dragPoint.x, dragPoint.x - clickPoint.x);
 						int height = Math.max(clickPoint.y - dragPoint.y, dragPoint.y - clickPoint.y);
 						selectionBounds = new Rectangle(x, y, width, height);
+						mouseX = e.getPoint().x;
+						mouseY = e.getPoint().y;
+						enlargedPixels = image.getSubimage(mouseX-5, mouseY-5, 10, 10);
 						repaint();
 					}
 				}
-
-				@Override
 				public void mouseReleased(MouseEvent e) {
 					clickPoint = null;
 					createSubImage(selectionBounds);
@@ -149,24 +108,13 @@ public class regionSelect {
 			addMouseListener(mouseHandler);
 			addMouseMotionListener(mouseHandler);
 			addKeyListener(new KeyListener() {
-				@Override
-				public void keyTyped(KeyEvent e) {
-				}
-
-				@Override
-				public void keyReleased(KeyEvent e) {
-				}
-
-				@Override
-				public void keyPressed(KeyEvent e) {
-					if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-						frame.dispose();
-					}
-				}
+				public void keyTyped(KeyEvent e) {}				
+				public void keyReleased(KeyEvent e) {}			
+				public void keyPressed(KeyEvent e) {if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {frame.dispose();}}
 			});
 		}
 
-		@Override
+		
 		protected void paintComponent(Graphics g) {
 			int width = 0;
 			int height = 0;
@@ -180,26 +128,25 @@ public class regionSelect {
 			super.paintComponent(g);
 			Graphics2D g2d = (Graphics2D) g.create();
 			g2d.setColor(new Color(255, 255, 255, 128));
-			if(mainWindow.threescreens) {
-				g2d.drawImage(image, 0, 0, (int) width, (int) height, null);
-			} else {
-				g2d.drawImage(image, 0, 0, (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight(),null);
-			}
-			if (System.getProperty("os.name").contains("Windows")) {
-				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-			} else {
-				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			}
+			
+			if(mainWindow.threescreens) {g2d.drawImage(image, 0, 0, (int) width, (int) height, null);} 
+			else {g2d.drawImage(image,0,0,(int)Toolkit.getDefaultToolkit().getScreenSize().getWidth(),(int)Toolkit.getDefaultToolkit().getScreenSize().getHeight(),null);}
+						
+			if (System.getProperty("os.name").contains("Windows")) {g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);} 
+			else {g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);}
 
 			Area fill = new Area(new Rectangle(new Point(0, 0), getSize()));
-			if (selectionBounds != null) {
-				fill.subtract(new Area(selectionBounds));
-			}
+			if (selectionBounds != null) {fill.subtract(new Area(selectionBounds));}
 			g2d.fill(fill);
 			if (selectionBounds != null) {
 				g2d.setColor(Color.BLACK);
 				g2d.draw(selectionBounds);
 			}
+			g2d.setColor(Color.BLACK);
+			g2d.drawRect(mouseX + 20, mouseY + 20, 83, 83);
+			g2d.drawImage(enlargedPixels, mouseX+21, mouseY+21, 82, 82, null);
+			g2d.drawImage(selection, mouseX+21, mouseY+21, 82, 82, null);
+			
 			g2d.dispose();
 		}
 	}
@@ -211,22 +158,12 @@ public class regionSelect {
 			BufferedImage subImage = image.getSubimage(bounds.x, bounds.y, (int) bounds.getWidth(), (int) bounds.getHeight());
 			File outputfile = new File(mainWindow.checkOSName() + randomName);
 			ImageIO.write(subImage, "png", outputfile);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} catch (IOException e) {e.printStackTrace();}
 		try {
 			Thread uploadThread = new Thread(new Runnable() {
-				public void run() {
-					try {
-						mainWindow.uploadFile(randomName,"");
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
+				public void run() {try {mainWindow.uploadFile(randomName,"");} catch (Exception e) {e.printStackTrace();}}
 			});
 			uploadThread.start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {e.printStackTrace();}
 	}
 }
