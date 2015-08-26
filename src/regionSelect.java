@@ -3,6 +3,7 @@ import java.awt.event.*;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import java.io.*;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -53,10 +54,15 @@ public class regionSelect {
 		private Rectangle selectionBounds;
 		private Point clickPoint;
 		private int mouseX, mouseY;
-		private BufferedImage enlargedPixels,selection;
+		private BufferedImage enlargedPixels,selection,circle;
 		
 		public CapturePane() {
-			try {selection = ImageIO.read(getClass().getResource("selection.png"));} catch (IOException e1) {e1.printStackTrace();}
+			try {
+				selection = ImageIO.read(getClass().getResource("selection.png"));
+				circle = ImageIO.read(getClass().getResource("circle.png"));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			Toolkit toolkit = Toolkit.getDefaultToolkit();
 			Image cursorImg = toolkit.getImage(getClass().getResource("cursor.png"));
 			Point point = new Point(28 / 2 + 1, 26 / 2 + 2);
@@ -142,10 +148,30 @@ public class regionSelect {
 				g2d.setColor(Color.BLACK);
 				g2d.draw(selectionBounds);
 			}
+			g2d.setColor(Color.GRAY);
+			g2d.drawRect(mouseX-1, 0, 3, mouseY-10);
+			g2d.drawRect(mouseX-1, mouseY+10, 3, (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()-mouseY);
+			g2d.drawRect(0, mouseY-1, mouseX-10,3);
+			g2d.drawRect(mouseX+10, mouseY-1, (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth()-mouseX,3);
+			g2d.setColor(Color.WHITE);
+			g2d.fillRect(mouseX, 0, 2,mouseY-10);
+			
+			g2d.setColor(Color.WHITE);
+			g2d.fillRect(mouseX, 0, 2, mouseY-10);
+			g2d.fillRect(mouseX, mouseY+10, 2, (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()-mouseY);
+			g2d.fillRect(0, mouseY, mouseX-10,2);
+			g2d.fillRect(mouseX+10, mouseY, (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth()-mouseX,2);
+			
 			g2d.setColor(Color.BLACK);
-			g2d.drawRect(mouseX + 20, mouseY + 20, 83, 83);
-			g2d.drawImage(enlargedPixels, mouseX+21, mouseY+21, 82, 82, null);
-			g2d.drawImage(selection, mouseX+21, mouseY+21, 82, 82, null);
+			//g2d.drawRect(mouseX + 20, mouseY + 20, 101, 101);
+			g2d.drawImage(enlargedPixels, mouseX+30, mouseY+30, 161, 161, null);
+			g2d.drawImage(circle, mouseX+20, mouseY+20, 161,161, null);
+			
+			/*g2d.setColor(Color.WHITE);
+			Stroke dashed = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{5}, 0);
+	        g2d.setStroke(dashed);
+	        g2d.drawLine(mouseX,0,mouseX,mouseY-20);
+	        g2d.drawLine(mouseX+2,0,mouseX+2,mouseY-20);*/    // THIS IS IN PROGRESS
 			
 			g2d.dispose();
 		}
