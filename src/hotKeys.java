@@ -18,6 +18,7 @@ public class hotKeys implements NativeKeyListener {
 	static boolean ctrl_bool = false;
 	static boolean print_bool = false;
 	static boolean alt_bool = false;
+	public static boolean escape_bool = false;
 	static int count = 0;
 
 	public static boolean ctrlprintscreen() {
@@ -82,6 +83,10 @@ public class hotKeys implements NativeKeyListener {
 			print_bool = true;
 			checkKeys();
 		}
+		if(e.getKeyCode() == NativeKeyEvent.VK_ESCAPE) {
+			escape_bool = true;
+			checkKeys();
+		}
 	}
 
 	public void nativeKeyReleased(NativeKeyEvent e) {
@@ -95,6 +100,10 @@ public class hotKeys implements NativeKeyListener {
 		}
 		if (e.getKeyCode() == NativeKeyEvent.VK_PRINTSCREEN) {
 			print_bool = false;
+			checkKeys();
+		}
+		if(e.getKeyCode() == NativeKeyEvent.VK_ESCAPE) {
+			escape_bool = true;
 			checkKeys();
 		}
 	}
