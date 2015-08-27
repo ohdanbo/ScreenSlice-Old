@@ -200,7 +200,7 @@ public class regionSelect {
 		mainWindow.randomNameGenerator();
 		final String randomName = mainWindow.randomFileName;
 		try {
-			BufferedImage subImage = image.getSubimage(bounds.x+2, bounds.y+2, (int) bounds.getWidth(), (int) bounds.getHeight());
+			BufferedImage subImage = image.getSubimage(bounds.x+1, bounds.y+1, (int) bounds.getWidth()+1, (int) bounds.getHeight()+1);
 			File outputfile = new File(mainWindow.checkOSName() + randomName);
 			ImageIO.write(subImage, "png", outputfile);
 		} catch (IOException e) {e.printStackTrace();}
