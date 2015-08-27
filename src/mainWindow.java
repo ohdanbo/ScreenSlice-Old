@@ -1,4 +1,3 @@
-
 import java.awt.*;
 import java.awt.TrayIcon.*;
 import java.awt.datatransfer.*;

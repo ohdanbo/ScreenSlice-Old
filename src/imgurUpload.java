@@ -22,8 +22,10 @@ public class imgurUpload {
 	public imgurUpload(String randName) {
 		try {
 			String response = imageToString(mainWindow.checkOSName() + randName);
-			String fileSize[] = response.split("\"size\":\"");
-			String fileSize1[] = fileSize[1].split("\",\"views");
+			//System.out.println(response);
+			String fileSize[] = response.split("size\":");
+			//System.out.println(fileSize[1]);
+			String fileSize1[] = fileSize[1].split(",\"views");
 			int imageSize = Integer.parseInt(fileSize1[0]);
 			int imgSize = imageSize / 1024;
 			String link = response.substring(

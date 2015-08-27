@@ -1,17 +1,10 @@
-
 import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-
 import javax.imageio.ImageIO;
-
-import org.jnativehook.GlobalScreen;
-import org.jnativehook.NativeHookException;
-import org.jnativehook.keyboard.NativeKeyEvent;
-import org.jnativehook.keyboard.NativeKeyListener;
+import org.jnativehook.*;
+import org.jnativehook.keyboard.*;
 
 public class hotKeys implements NativeKeyListener {
 	static int i = 0;
