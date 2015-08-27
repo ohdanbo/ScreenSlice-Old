@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
 
@@ -86,7 +88,7 @@ public class regionSelect {
 				public void mouseMoved(MouseEvent e) {
 					mouseX = e.getPoint().x;
 					mouseY = e.getPoint().y;
-					enlargedPixels = image.getSubimage(mouseX-5, mouseY-5, 10, 10);
+					enlargedPixels = image.getSubimage(mouseX-4, mouseY-4, 11, 11);
 					repaint();
 				}
 				public void mouseDragged(MouseEvent e) {
@@ -100,7 +102,7 @@ public class regionSelect {
 						selectionBounds = new Rectangle(x, y, width, height);
 						mouseX = e.getPoint().x;
 						mouseY = e.getPoint().y;
-						enlargedPixels = image.getSubimage(mouseX-5, mouseY-5, 10, 10);
+						enlargedPixels = image.getSubimage(mouseX-4, mouseY-4, 11, 11);
 						repaint();
 					}
 				}
@@ -164,7 +166,9 @@ public class regionSelect {
 			
 			g2d.setColor(Color.BLACK);
 			//g2d.drawRect(mouseX + 20, mouseY + 20, 101, 101);
-			g2d.drawImage(enlargedPixels, mouseX+30, mouseY+30, 161, 161, null);
+			g.setClip(new Ellipse2D.Float(mouseX+20, mouseY+20, 161,161));
+			BufferedImage roundedPixels = makeRoundedCorner(enlargedPixels, 20);
+			g2d.drawImage(roundedPixels, mouseX+20, mouseY+20, 161, 161, null);
 			g2d.drawImage(circle, mouseX+20, mouseY+20, 161,161, null);
 			
 			/*g2d.setColor(Color.WHITE);
@@ -176,12 +180,27 @@ public class regionSelect {
 			g2d.dispose();
 		}
 	}
+	
+	public static BufferedImage makeRoundedCorner(BufferedImage image, int cornerRadius) {
+	    int w = image.getWidth();
+	    int h = image.getHeight();
+	    BufferedImage output = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+	    Graphics2D g2 = output.createGraphics();
+	    g2.setComposite(AlphaComposite.Src);
+	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	    g2.setColor(Color.WHITE);
+	    g2.fill(new RoundRectangle2D.Float(0, 0, w, h, cornerRadius, cornerRadius));
+	    g2.setComposite(AlphaComposite.SrcAtop);
+	    g2.drawImage(image, 0, 0, null);
+	    g2.dispose();
+	    return output;
+	}
 
 	public void createSubImage(Rectangle bounds) {
 		mainWindow.randomNameGenerator();
 		final String randomName = mainWindow.randomFileName;
 		try {
-			BufferedImage subImage = image.getSubimage(bounds.x, bounds.y, (int) bounds.getWidth(), (int) bounds.getHeight());
+			BufferedImage subImage = image.getSubimage(bounds.x+2, bounds.y+2, (int) bounds.getWidth(), (int) bounds.getHeight());
 			File outputfile = new File(mainWindow.checkOSName() + randomName);
 			ImageIO.write(subImage, "png", outputfile);
 		} catch (IOException e) {e.printStackTrace();}
