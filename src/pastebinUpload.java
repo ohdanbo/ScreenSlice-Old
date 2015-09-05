@@ -1,5 +1,6 @@
 
 import java.awt.Toolkit;
+import java.awt.TrayIcon.MessageType;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.BufferedReader;
@@ -26,9 +27,7 @@ public class pastebinUpload {
 				String link = uploadTxt();
 				String linkSplit[] = link.split("com/");
 				String name = linkSplit[1];
-				JOptionPane.showMessageDialog(null,
-						"File uploaded! Address has been copied to clipboard.",
-						"Success!", JOptionPane.INFORMATION_MESSAGE);
+				mainWindow.tray.displayMessage("Successfully uploaded!", "Image Uploaded, URL has been copied to clipboard.", MessageType.INFO);
 				mainWindow.model.insertRow(0, new Object[] { name, "0" + "KB","<html><a href='" + link + "'>" + link + "</a></html>" });
 				StringSelection stringSelection = new StringSelection(link);
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();

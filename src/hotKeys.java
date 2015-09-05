@@ -15,30 +15,20 @@ public class hotKeys implements NativeKeyListener {
 	static int count = 0;
 
 	public static boolean ctrlprintscreen() {
-		if (ctrl_bool && print_bool) {
-			return true;
-		} else {
-			return false;
-		}
+		if (ctrl_bool && print_bool) {return true;} 
+		else {return false;}
 	}
 
 	public static boolean altprintscreen() {	
-		if (alt_bool && print_bool) {
-			return true;
-		} else {
-			return false;
-		}
+		if (alt_bool && print_bool) {return true;} 
+		else {return false;}
 	}
 
 	public static void checkKeys() {
 		if (ctrlprintscreen()) {
 			mainWindow.randomNameGenerator();
 			String randomName = mainWindow.randomFileName;
-			try {
-				mainWindow.regionScreenshot(randomName);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
+			try {mainWindow.regionScreenshot(randomName);} catch (Exception e1) {e1.printStackTrace();}
 		}
 		if (altprintscreen()) {
 			try {
@@ -52,14 +42,9 @@ public class hotKeys implements NativeKeyListener {
 				File file = new File(mainWindow.checkOSName() + randomName);
 				ImageIO.write(image, "png", file);
 				count++;
-				if(mainWindow.isImgur) {
-					new imgurUpload(randomName);
-				} else {
-					mainWindow.uploadFile(randomName,"");
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+				if(mainWindow.isImgur) {new imgurUpload(randomName);
+				} else {mainWindow.uploadFile(randomName,"");}
+			} catch (Exception e) {e.printStackTrace();}
 		}
 	}
 
@@ -100,9 +85,7 @@ public class hotKeys implements NativeKeyListener {
 			checkKeys();
 		}
 	}
-
-	public void nativeKeyTyped(NativeKeyEvent e) {
-	}
+	public void nativeKeyTyped(NativeKeyEvent e) {}
 
 	public static void main(String[] args) {
 		try {
@@ -112,9 +95,7 @@ public class hotKeys implements NativeKeyListener {
 			System.err.println(ex.getMessage());
 			System.exit(1);
 		}
-
 		GlobalScreen.getInstance().addNativeKeyListener(new hotKeys());
-
 		new mainWindow();
 	}
 }

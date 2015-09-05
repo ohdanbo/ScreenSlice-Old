@@ -50,17 +50,14 @@ public class settingsWindow extends JFrame {
 		
 		final JPanel uploadPanel = new JPanel();
 		uploadPanel.setBounds(5+110+5,0,530,360);
-//		uploadPanel.setBackground(Color.BLUE);
 		uploadPanel.setLayout(null);
 		
 		final JPanel imgurPanel = new JPanel();
 		imgurPanel.setBounds(5+110+5,0,530,360);
-//		imgurPanel.setBackground(Color.BLUE);
 		imgurPanel.setLayout(null);
 		
 		final JPanel localPanel = new JPanel();
 		localPanel.setBounds(5+110+5,0,530,360);
-//		localPanel.setBackground(Color.BLUE);
 		localPanel.setLayout(null);
 		localPanel.setVisible(false);
 		
@@ -71,15 +68,10 @@ public class settingsWindow extends JFrame {
 				localPanel.setVisible(false);
 				uploadPanel.setVisible(true);
 			}
-			public void mouseEntered(MouseEvent arg0) {
-			}
-			public void mouseExited(MouseEvent arg0) {
-			}
-			public void mousePressed(MouseEvent arg0) {
-			}
-			public void mouseReleased(MouseEvent arg0) {
-			}
-			
+			public void mouseEntered(MouseEvent arg0) {			}
+			public void mouseExited(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseReleased(MouseEvent arg0) {}
 		});
 		buttonPanel.add(uploadSettings);
 		
@@ -90,17 +82,10 @@ public class settingsWindow extends JFrame {
 				uploadPanel.setVisible(false);
 				localPanel.setVisible(true);
 			}
-			public void mouseEntered(MouseEvent arg0) {
-			}
-			public void mouseExited(MouseEvent arg0) {
-			}
-			public void mousePressed(MouseEvent arg0) {
-				imgurSettings.setBackground(new Color(153, 204, 255));
-			}
-			public void mouseReleased(MouseEvent arg0) {
-				imgurSettings.setBackground(null);
-			}
-			
+			public void mouseEntered(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {imgurSettings.setBackground(new Color(153, 204, 255));}
+			public void mouseReleased(MouseEvent arg0) {imgurSettings.setBackground(null);}
 		});
 		buttonPanel.add(imgurSettings);
 		
@@ -109,22 +94,16 @@ public class settingsWindow extends JFrame {
 		try {imgurBtn.setFont(new customButton("","").defaultFont());} catch (Exception e2) {}
 		imgurBtn.setBounds(10,65,(int)imgurBtn.getPreferredSize().getWidth(),(int)imgurBtn.getPreferredSize().getHeight());
 		imgurBtn.setFocusPainted(false);
-		if(mainWindow.isImgur) {
-			imgurBtn.setSelected(true);
-		} else {
-			imgurBtn.setSelected(false);
-		}
+		if(mainWindow.isImgur) {imgurBtn.setSelected(true);} 
+		else {imgurBtn.setSelected(false);}
 		
 		JRadioButton ftpBtn = new JRadioButton("Use FTP");
 		ftpBtn.setActionCommand("");
 		try {ftpBtn.setFont(new customButton("","").defaultFont());} catch (Exception e2) {}
 		ftpBtn.setBounds(10,65+(int)imgurBtn.getPreferredSize().getHeight(),(int)ftpBtn.getPreferredSize().getWidth(),(int)ftpBtn.getPreferredSize().getHeight());
 		ftpBtn.setFocusPainted(false);
-		if(mainWindow.isImgur) {
-			ftpBtn.setSelected(false);
-		} else {
-			ftpBtn.setSelected(true);
-		}
+		if(mainWindow.isImgur) {ftpBtn.setSelected(false);} 
+		else {ftpBtn.setSelected(true);}
 		
 		ButtonGroup group = new ButtonGroup();
 		group.add(ftpBtn);
@@ -133,7 +112,6 @@ public class settingsWindow extends JFrame {
 		buttonPanel.add(imgurBtn);
 		
 		//-------------------------------Upload panel-------------------------------//
-		
 		
 		JLabel imgurLbl = new JLabel("<html><u>Imgur Settings</u></html>");
 		imgurLbl.setBounds(5,0,110,25);
@@ -192,20 +170,13 @@ public class settingsWindow extends JFrame {
 		save.setFocusPainted(false);
 		save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(imgurBtn.isSelected()) {
-					mainWindow.isImgur = true;
-				} else {
-					mainWindow.isImgur = false;
-				}
+				if(imgurBtn.isSelected()) {mainWindow.isImgur = true;} 
+				else {mainWindow.isImgur = false;}
 				mainWindow.hostStr = hostname.getText();
 				mainWindow.userStr = user.getText();
 				mainWindow.passStr = pass.getText();
 				mainWindow.uploadDir = uploadDir.getText();
-				try {
-					saveInfo();
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
+				try {saveInfo();} catch (Exception e1) {e1.printStackTrace();}
 				dispose();
 			}
 		});
@@ -217,9 +188,7 @@ public class settingsWindow extends JFrame {
 		try {cancel.setFont(new customButton("","").defaultFont());} catch (Exception e2) {}
 		cancel.setFocusPainted(false);
 		cancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
+			public void actionPerformed(ActionEvent e) {dispose();}
 		});
 		uploadPanel.add(cancel);
 				
@@ -245,7 +214,6 @@ public class settingsWindow extends JFrame {
 		try {imgurPassLbl.setFont(new customButton("","").defaultFont());} catch (Exception e2) {}
 		localPanel.add(imgurPassLbl);
 		
-		
 		final JPasswordField imgurPass = new JPasswordField();
 		imgurPass.setBounds(70, 60, 180, 25);
 		localPanel.add(imgurPass);
@@ -256,9 +224,7 @@ public class settingsWindow extends JFrame {
 		try {saveLocal.setFont(new customButton("","").defaultFont());} catch (Exception e2) {}
 		saveLocal.setFocusPainted(false);
 		saveLocal.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
+			public void actionPerformed(ActionEvent e) {dispose();}
 		});
 		localPanel.add(saveLocal);
 
@@ -268,9 +234,7 @@ public class settingsWindow extends JFrame {
 		try {cancelLocal.setFont(new customButton("","").defaultFont());} catch (Exception e2) {}
 		cancelLocal.setFocusPainted(false);
 		cancelLocal.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
+			public void actionPerformed(ActionEvent e) {dispose();}
 		});
 		localPanel.add(cancelLocal);
 		
@@ -291,15 +255,9 @@ public class settingsWindow extends JFrame {
 	public void saveInfo() throws Exception {
 		File createDirectories = new File(mainWindow.checkOSName() + "//ScreenSlice Files//");
 		createDirectories.mkdirs();
-		if(mainWindow.isImgur) {
-			
-		}
 		String path = "";
-		if (System.getProperty("os.name").contains("Windows")) {
-			path = windowsPath;
-		} else {
-			path = linuxPath;
-		}
+		if (System.getProperty("os.name").contains("Windows")) {path = windowsPath;}
+		else {path = linuxPath;}
 		BufferedWriter hostFile = new BufferedWriter(new FileWriter(path + "//ScreenSlice Files//" + "host.txt"));
 		BufferedWriter userFile = new BufferedWriter(new FileWriter(path + "//ScreenSlice Files//" + "user.txt"));
 		BufferedWriter passFile = new BufferedWriter(new FileWriter(path + "//ScreenSlice Files//" + "pass.txt"));
@@ -311,11 +269,8 @@ public class settingsWindow extends JFrame {
 		passFile.write(mainWindow.passStr);
 		uploadDirFile.write(mainWindow.uploadDir);
 		
-		if(mainWindow.isImgur) {
-			imgurorftpFile.write("imgur");
-		} else {
-			imgurorftpFile.write("ftp");
-		}
+		if(mainWindow.isImgur) {imgurorftpFile.write("imgur");}
+		else {imgurorftpFile.write("ftp");}
 
 		if (hostFile != null || userFile != null || passFile != null || uploadDirFile != null || imgurorftpFile != null) {
 			hostFile.close();

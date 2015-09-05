@@ -43,7 +43,7 @@ public class regionSelect {
 				frame.setSize((int) width, (int) height);
 				frame.setIconImage(new ImageIcon(getClass().getResource("icon.png")).getImage());
 				frame.setUndecorated(true);
-				if(mainWindow.threescreens) {frame.setLocation(-1280, 0);} 
+				if(mainWindow.threescreens) {frame.setLocation(-1440, 0);} 
 				else {frame.setLocation(0,0);}
 				frame.setVisible(true);
 			}
@@ -149,11 +149,12 @@ public class regionSelect {
 				g2d.setColor(Color.BLACK);
 				g2d.draw(selectionBounds);
 			}
+			
 			g2d.setColor(Color.GRAY);
 			g2d.drawRect(mouseX-1, 0, 3, mouseY-10);
 			g2d.drawRect(mouseX-1, mouseY+10, 3, (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()-mouseY);
 			g2d.drawRect(0, mouseY-1, mouseX-10,3);
-			g2d.drawRect(mouseX+10, mouseY-1, (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth()-mouseX,3);
+			g2d.drawRect(mouseX+10, mouseY-1, (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth()*2-mouseX,3);
 			g2d.setColor(Color.WHITE);
 			g2d.fillRect(mouseX, 0, 2,mouseY-10);
 			
@@ -164,11 +165,37 @@ public class regionSelect {
 			g2d.fillRect(mouseX+10, mouseY, (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth()-mouseX,2);
 			
 			g2d.setColor(Color.BLACK);
-			//g2d.drawRect(mouseX + 20, mouseY + 20, 101, 101);
 			g.setClip(new Ellipse2D.Float(mouseX+20, mouseY+20, 161,161));
 			BufferedImage roundedPixels = makeRoundedCorner(enlargedPixels, 20);
-			g2d.drawImage(roundedPixels, mouseX+20, mouseY+20, 161, 161, null);
-			g2d.drawImage(circle, mouseX+20, mouseY+20, 161,161, null);
+			if(mouseX < 1258 && mouseY < 719) {
+				g2d.drawImage(roundedPixels, mouseX+20, mouseY+20, 161, 161, null);
+				g2d.drawImage(circle, mouseX+20, mouseY+20, 161,161, null);
+			} else {
+				if(mouseX > 1258 && mouseY > 719) {
+					g2d.drawImage(roundedPixels, mouseX-20-161, mouseY-20-161, 161, 161, null);
+					g2d.drawImage(circle, mouseX-20-161, mouseY-20-161, 161,161, null);
+				} else if(mouseX > 1258) {
+					g2d.drawImage(roundedPixels, mouseX-20-161, mouseY+20, 161, 161, null);
+					g2d.drawImage(circle, mouseX-20-161, mouseY+20, 161,161, null);
+				} else if(mouseY > 719) {
+					g2d.drawImage(roundedPixels, mouseX+20, mouseY-20-161, 161, 161, null);
+					g2d.drawImage(circle, mouseX+20, mouseY-20-161, 161,161, null);
+				}
+				
+				/*if(mouseX > 182) { //right side
+					System.out.println("test");
+					g2d.drawImage(roundedPixels, mouseX-20-161, mouseY+20, 161, 161, null);
+					g2d.drawImage(circle, mouseX-20-161, mouseY+20, 161,161, null);
+				} else if(mouseY < 180) {
+					g2d.drawImage(roundedPixels, mouseX+20, mouseY-20, 161, 161, null);
+					g2d.drawImage(circle, mouseX+20, mouseY-20, 161,161, null);				
+				} else {
+					g2d.drawImage(roundedPixels, mouseX+20, mouseY-20-161, 161, 161, null);
+					g2d.drawImage(circle, mouseX+20, mouseY-20-161, 161,161, null);
+				}*/
+			}
+			
+			System.out.println(mouseX + ", " + mouseY);
 			
 			/*g2d.setColor(Color.WHITE);
 			Stroke dashed = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{5}, 0);

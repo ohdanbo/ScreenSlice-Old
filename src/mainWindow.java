@@ -20,7 +20,6 @@ public class mainWindow extends JFrame {
 	public static String uploadDir = null;
 	public static String versionStr = null;
 	public static String imgurOrFTP = null;
-	public static String versionID = "1.1"; // ready for when I make an auto updater
 	public static String username = System.getProperty("user.name");
 	public static String windowsPath;
 	public static String linuxPath;
@@ -39,24 +38,14 @@ public class mainWindow extends JFrame {
 	public static boolean mouseOutsideTray;
 
 	public mainWindow() {
-//		username = "Danbo"; // need this line when using my laptop
+		new Updater();
 		windowsPath = "C:\\Users\\" + username + "\\Pictures\\Screenshots\\";
 		linuxPath = "//home//" + System.getProperty("user.name") + "//Pictures//Screenshots//";
 		File f = new File(windowsPath + "");
-		if(f.exists() && !f.isDirectory()) { 
-			threescreens = true; 
-		}
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		try {UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());} catch (Exception e) {e.printStackTrace();}
 		trayIcon();
-		try {
-			loadInfo();
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
+		try {loadInfo();} catch (Exception e1) {e1.printStackTrace();}
+		
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setSize(640, 360);
@@ -70,18 +59,14 @@ public class mainWindow extends JFrame {
 				if (ctrlv()) {
 					try {
 						String path = "";
-						if (System.getProperty("os.name").contains("Windows")) {
-							path = windowsPath;
-						} else {	
-							path = linuxPath;
-						}
+						if (System.getProperty("os.name").contains("Windows")) {path = windowsPath;} 
+						else {path = linuxPath;}
 						randomNameGenerator();
 						String randomName = randomTxtName;
 						String data = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
 						BufferedWriter txt = new BufferedWriter(new FileWriter(path + randomName + ".txt"));
 						txt.write(data);
-						if (txt != null)
-							txt.close();
+						if (txt != null) txt.close();
 						uploadFile(randomName + ".txt", data);						
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -92,11 +77,8 @@ public class mainWindow extends JFrame {
 			}
 
 			public boolean ctrlv() {
-				if (ctrl_bool && v_bool) {
-					return true;
-				} else {
-					return false;
-				}
+				if (ctrl_bool && v_bool) {return true;}
+				else {return false;}
 			}
 
 			public void keyPressed(KeyEvent e) {
@@ -120,9 +102,7 @@ public class mainWindow extends JFrame {
 					checkKeys();
 				}
 			}
-
-			public void keyTyped(KeyEvent arg0) {
-			}
+			public void keyTyped(KeyEvent arg0) {}
 		});
 
 		final JTable table = new JTable(model);
@@ -150,13 +130,7 @@ public class mainWindow extends JFrame {
 				String url = (String) table.getModel().getValueAt(row, col);
 				String[] splitLink = url.split("'>http://");
 				String[] newLink = splitLink[1].split("</a>");
-//				System.out.println(newLink[0]);
-				if (url.contains("http://")) {
-					try {
-						Desktop.getDesktop().browse(new URL("http://" + newLink[0]).toURI());
-					} catch (Exception ex) {
-					}
-				}
+				if (url.contains("http://")) {try {Desktop.getDesktop().browse(new URL("http://" + newLink[0]).toURI());} catch (Exception ex) {ex.printStackTrace();}}
 			}
 		});
 
@@ -174,19 +148,12 @@ public class mainWindow extends JFrame {
 					randomNameGenerator();
 					String randomName = randomFileName;
 					takeScreenshot(randomName);
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
+				} catch (Exception e1) {e1.printStackTrace();}
 			}
-			public void mouseEntered(MouseEvent arg0) {
-			}
-			public void mouseExited(MouseEvent arg0) {
-			}
-			public void mousePressed(MouseEvent arg0) {
-			}
-			public void mouseReleased(MouseEvent arg0) {
-			}
-			
+			public void mouseEntered(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseReleased(MouseEvent arg0) {}
 		});
 		panel.add(screenshotBtn);
 		
@@ -196,21 +163,12 @@ public class mainWindow extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 				randomNameGenerator();
 				String randomName = randomFileName;
-				try {
-					regionScreenshot(randomName);
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
+				try {regionScreenshot(randomName);} catch (Exception e1) {e1.printStackTrace();}
 			}
-			public void mouseEntered(MouseEvent arg0) {
-			}
-			public void mouseExited(MouseEvent arg0) {
-			}
-			public void mousePressed(MouseEvent arg0) {
-			}
-			public void mouseReleased(MouseEvent arg0) {
-			}
-			
+			public void mouseEntered(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseReleased(MouseEvent arg0) {}
 		});
 		panel.add(regionBtn);
 		
@@ -221,24 +179,11 @@ public class mainWindow extends JFrame {
 		customButton settingsBtn = new customButton(" Settings", "settings.png");
 		settingsBtn.setBounds(5,regionBtn.getY() + regionBtn.getHeight() + 5,130, 20);
 		settingsBtn.addMouseListener(new MouseListener() {
-			public void mouseClicked(MouseEvent arg0) {
-				JOptionPane.showMessageDialog(null, "Settings coming soon!", "Coming soon", JOptionPane.INFORMATION_MESSAGE);
-				/*				new settingsWindow();
-				try {
-					loadInfo();
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-*/			}
-			public void mouseEntered(MouseEvent arg0) {
-			}
-			public void mouseExited(MouseEvent arg0) {
-			}
-			public void mousePressed(MouseEvent arg0) {
-			}
-			public void mouseReleased(MouseEvent arg0) {
-			}
-			
+			public void mouseClicked(MouseEvent arg0) {}
+			public void mouseEntered(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseReleased(MouseEvent arg0) {}
 		});
 		panel.add(settingsBtn);
 		
@@ -247,21 +192,12 @@ public class mainWindow extends JFrame {
 		destsettingsBtn.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent arg0) {
 				new settingsWindow();
-				try {
-					loadInfo();
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
+				try {loadInfo();} catch (Exception e1) {e1.printStackTrace();}
 			}
-			public void mouseEntered(MouseEvent arg0) {
-			}
-			public void mouseExited(MouseEvent arg0) {
-			}
-			public void mousePressed(MouseEvent arg0) {
-			}
-			public void mouseReleased(MouseEvent arg0) {
-			}
-			
+			public void mouseEntered(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseReleased(MouseEvent arg0) {}			
 		});
 		panel.add(destsettingsBtn);
 		
@@ -276,23 +212,18 @@ public class mainWindow extends JFrame {
 				GlobalScreen.unregisterNativeHook();
 				System.exit(0);
 			}
-			public void mouseEntered(MouseEvent arg0) {
-			}
-			public void mouseExited(MouseEvent arg0) {
-			}
-			public void mousePressed(MouseEvent arg0) {
-			}
-			public void mouseReleased(MouseEvent arg0) {
-			}
-			
+			public void mouseEntered(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseReleased(MouseEvent arg0) {}
 		});
 		panel.add(exitBtn);
 		
-		setTitle("ScreenSlice");
+		setTitle("ScreenSlice - V" + Updater.currentVersion);
 		setSize(640, 360);
 		setLocationRelativeTo(null);
 		setIconImage(icon.getImage());
-		setDefaultCloseOperation(HIDE_ON_CLOSE);//CHANGE ME TO HIDE_ON_CLOSE!!!!
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		setResizable(false);
 		setVisible(false);
 		setBackground(Color.WHITE);
@@ -311,12 +242,11 @@ public class mainWindow extends JFrame {
 					String randomName = randomFileName;
 					takeTrayScreenshot(randomName);
 					setVisible(false);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
+				} catch (Exception ex) {ex.printStackTrace();}
 			}
 	    });
 	    jpopup.add(screenshot);
+	    
 	    JMenuItem region = new JMenuItem("Region", new ImageIcon(getClass().getResource("region.png")));
 	    region.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -331,14 +261,14 @@ public class mainWindow extends JFrame {
 	    });
 	    jpopup.add(region);
 	    jpopup.addSeparator();
+	    
 	    JMenuItem settings = new JMenuItem("Settings", new ImageIcon(getClass().getResource("settings.png")));
 	    settings.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
-	    		new settingsWindow();
-	    	}
+	    	public void actionPerformed(ActionEvent e) {new settingsWindow();}
 	    });
 	    jpopup.add(settings);
 	    jpopup.addSeparator();
+	    
 	    JMenuItem exit = new JMenuItem("Exit", new ImageIcon(getClass().getResource("exit.png")));
 	    exit.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
@@ -357,7 +287,7 @@ public class mainWindow extends JFrame {
 			tray.addMouseListener(new MouseAdapter() {
 				public void mouseReleased(MouseEvent e) {
 					if (e.getButton() == MouseEvent.BUTTON3) {
-		                jpopup.setLocation(e.getX(), e.getY());
+		                jpopup.setLocation(e.getX(), e.getY()-105);
 		                jpopup.setInvoker(jpopup);
 		                jpopup.setVisible(true);
 		            }
@@ -366,46 +296,25 @@ public class mainWindow extends JFrame {
 			tray.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try{
-						if(isImgur) {
-							Desktop.getDesktop().browse(new URL(imgurUpload.newLink).toURI());
-						} else {
-							Desktop.getDesktop().browse(new URL(address).toURI());
-						}
+						if(isImgur) {Desktop.getDesktop().browse(new URL(imgurUpload.newLink).toURI());}
+						else {Desktop.getDesktop().browse(new URL(address).toURI());}
 					}catch (Exception ex) {}
 				}
 			});
 			tray.addMouseListener(new MouseListener() {
-				public void mousePressed(MouseEvent e) {
-					if (e.getClickCount() >= 2) {
-						setVisible(true);
-					}
-				}
-
-				public void mouseClicked(MouseEvent e) {
-				}
-
-				public void mouseEntered(MouseEvent e) {
-				}
-
-				public void mouseExited(MouseEvent e) {
-				}
-
-				public void mouseReleased(MouseEvent e) {
-				}
+				public void mousePressed(MouseEvent e) {if (e.getClickCount() >= 2) {setVisible(true);}}
+				public void mouseClicked(MouseEvent e) {}
+				public void mouseEntered(MouseEvent e) {}
+				public void mouseExited(MouseEvent e) {}
+				public void mouseReleased(MouseEvent e) {}
 			});
-		} catch (Exception e) {
-			
-		}
+		} catch (Exception e) {}
 	}
-			
 
 	public static String checkOSName() {
 		String path = "";
-		if (System.getProperty("os.name").contains("Windows")) {
-			path = windowsPath;
-		} else {
-			path = linuxPath;
-		}
+		if (System.getProperty("os.name").contains("Windows")) {path = windowsPath;} 
+		else {path = linuxPath;}
 		return path;
 	}
 
@@ -425,7 +334,7 @@ public class mainWindow extends JFrame {
 				Rectangle screenBounds = screen.getDefaultConfiguration().getBounds();
 				allScreenBounds.width += screenBounds.width;
 				allScreenBounds.height = Math.max(allScreenBounds.height, screenBounds.height);
-				BufferedImage screenShot = new Robot().createScreenCapture(new Rectangle((int) allScreenBounds.getX() - 1280, (int) allScreenBounds.getY(), allScreenBounds.width, allScreenBounds.height));
+				BufferedImage screenShot = new Robot().createScreenCapture(new Rectangle((int) allScreenBounds.getX() - 1440, (int) allScreenBounds.getY(), allScreenBounds.width, allScreenBounds.height));
 				ImageIO.write(screenShot, "png", new File(checkOSName() + "tempShot.png"));
 			}
 		} else {
@@ -445,7 +354,7 @@ public class mainWindow extends JFrame {
 				Rectangle screenBounds = screen.getDefaultConfiguration().getBounds();
 				allScreenBounds.width += screenBounds.width;
 				allScreenBounds.height = Math.max(allScreenBounds.height, screenBounds.height);
-				BufferedImage screenShot = new Robot().createScreenCapture(new Rectangle((int) allScreenBounds.getX() - 1280, (int) allScreenBounds.getY(), allScreenBounds.width, allScreenBounds.height));
+				BufferedImage screenShot = new Robot().createScreenCapture(new Rectangle((int) allScreenBounds.getX() - 1440, (int) allScreenBounds.getY(), allScreenBounds.width, allScreenBounds.height));
 				ImageIO.write(screenShot, "png", new File(checkOSName() + "tempShot.png"));
 			}
 		} else {
@@ -468,13 +377,7 @@ public class mainWindow extends JFrame {
 			JOptionPane.showMessageDialog(null, "Go to settings to enter FTP information!", "FTP Error!", JOptionPane.ERROR_MESSAGE);
 		} else {
 			Thread uploadThread = new Thread(new Runnable() {
-				public void run() {
-					try {
-						uploadFile(randomName, "");
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
+				public void run() {try {uploadFile(randomName, "");} catch (Exception e) {e.printStackTrace();}}
 			});
 			uploadThread.start();
 		}
@@ -489,11 +392,7 @@ public class mainWindow extends JFrame {
 		} else {
 			Thread uploadThread = new Thread(new Runnable() {
 				public void run() {
-					try {
-						uploadFile(randomName, "");
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					try {uploadFile(randomName, "");} catch (Exception e) {e.printStackTrace();}
 				}
 			});
 			uploadThread.start();
@@ -503,28 +402,15 @@ public class mainWindow extends JFrame {
 	public static void uploadFile(final String randomName, final String data) throws Exception {
 		if (randomName.contains(".txt")) {
 			Thread pasteBinThread = new Thread(new Runnable() {
-				public void run() {
-					try {
-						new pastebinUpload(data);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
+				public void run() {try {new pastebinUpload(data);} catch (Exception e) {e.printStackTrace();}}
 			});
 			pasteBinThread.start();
 		} else {
 			if(isImgur) {
 				Thread imgurThread = new Thread(new Runnable() {
-					public void run() {
-						try {
-							new imgurUpload(randomName);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
+					public void run() {try {new imgurUpload(randomName);} catch (Exception e) {e.printStackTrace();}}
 				});
 				imgurThread.start();
-				
 			} else {
 				FTPClient ftp = new FTPClient();
 				int reply;
@@ -541,9 +427,8 @@ public class mainWindow extends JFrame {
 				try (InputStream input = new FileInputStream(new File(checkOSName() + randomName))) {
 					ftp.makeDirectory(uploadDir);
 					ftp.storeFile(uploadDir + randomName, input);
-				} catch (Exception e){
-					e.printStackTrace();
-				}
+				} catch (Exception e){e.printStackTrace();}
+				
 				ftp.logout();
 				ftp.disconnect();
 				address = "http://" + hostStr + uploadDir + randomName;
@@ -551,7 +436,6 @@ public class mainWindow extends JFrame {
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				clipboard.setContents(stringSelection, null);
 				tray.displayMessage("Successfully uploaded!", "Image Uploaded, URL has been copied to clipboard.", MessageType.INFO);
-//				JOptionPane.showMessageDialog(null, "File uploaded! Address has been copied to clipboard.", "Success!", JOptionPane.INFORMATION_MESSAGE);
 				File f = new File(checkOSName() + randomName);
 				link = "http://" + hostStr + uploadDir + randomName;
 				model.insertRow(0, new Object[] { randomName, f.length() / 1024 + "KB", "<html><a href='" + link + "'>" + link + "</a></html>" });
@@ -575,11 +459,9 @@ public class mainWindow extends JFrame {
 		passStr = passReader.readLine();
 		uploadDir = uploadDirFile.readLine();
 		imgurOrFTP = readImgurOrFtp.readLine();
-		if (imgurOrFTP.equals("imgur")) {
-			isImgur = true;
-		} else {
-			isImgur = false;
-		}
+		
+		if (imgurOrFTP.equals("imgur")) {isImgur = true;} 
+		else {isImgur = false;}
 
 		if (hostReader != null || userReader != null || passReader != null || uploadDirFile != null || readImgurOrFtp != null) {
 			hostReader.close();
