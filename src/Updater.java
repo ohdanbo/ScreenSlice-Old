@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 public class Updater {
-	public static double currentVersion = 6;
+	public static double currentVersion = 7;
 	private double remoteVersion;
 	
 	public Updater() {
@@ -89,6 +89,7 @@ public class Updater {
 			url = new URL("http://ohdanbo.com/screenslice/version.txt");
 			Scanner s = new Scanner(url.openStream());
 			remoteVersion = s.nextDouble();
+			//System.out.println(remoteVersion);
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}

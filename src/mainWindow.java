@@ -6,9 +6,11 @@ import java.awt.image.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+
 import javax.imageio.*;
 import javax.swing.*;
 import javax.swing.table.*;
+
 import org.apache.commons.net.ftp.*;
 import org.jnativehook.GlobalScreen;
 
@@ -326,44 +328,41 @@ public class mainWindow extends JFrame {
 	}
 
 	public static void regionScreenshot(final String randomName) throws Exception {
-		if(threescreens) {
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			GraphicsDevice[] screens = ge.getScreenDevices();
-			Rectangle allScreenBounds = new Rectangle();
-			for (GraphicsDevice screen : screens) {
-				Rectangle screenBounds = screen.getDefaultConfiguration().getBounds();
-				allScreenBounds.width += screenBounds.width;
-				allScreenBounds.height = Math.max(allScreenBounds.height, screenBounds.height);
-				BufferedImage screenShot = new Robot().createScreenCapture(new Rectangle((int) allScreenBounds.getX() - 1440, (int) allScreenBounds.getY(), allScreenBounds.width, allScreenBounds.height));
-				ImageIO.write(screenShot, "png", new File(checkOSName() + "tempShot.png"));
-			}
-		} else {
-			BufferedImage screenShot = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
-			ImageIO.write(screenShot, "png", new File(checkOSName() + "tempShot.png"));
+		int width = 0, height = 0, x = 0, y = 0;
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice[] gs = ge.getScreenDevices();
+		for (GraphicsDevice curGs : gs) {
+			GraphicsConfiguration sc = curGs.getDefaultConfiguration();
+			DisplayMode mode = curGs.getDisplayMode();
+			width += mode.getWidth();
+			height = mode.getHeight();
+			if(sc.getBounds().getX() < x) x = (int)sc.getBounds().getX();
+			if(sc.getBounds().getY() < y) y = (int)sc.getBounds().getY();
 		}
+		BufferedImage screenShot = new Robot().createScreenCapture(new Rectangle((int) x, (int) y, width, height));
+		ImageIO.write(screenShot, "png", new File(checkOSName() + "tempShot.png"));
+		screenShot.flush();
 		File f = new File(checkOSName() + "tempShot.png");
-		new regionSelect(f);
+		new regionSelect(f, width, height, x, y);
 	}
 	
 	public static void regionTrayScreenshot(final String randomName) throws Exception {
-		if(threescreens) {
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			GraphicsDevice[] screens = ge.getScreenDevices();
-			Rectangle allScreenBounds = new Rectangle();
-			for (GraphicsDevice screen : screens) {
-				Rectangle screenBounds = screen.getDefaultConfiguration().getBounds();
-				allScreenBounds.width += screenBounds.width;
-				allScreenBounds.height = Math.max(allScreenBounds.height, screenBounds.height);
-				BufferedImage screenShot = new Robot().createScreenCapture(new Rectangle((int) allScreenBounds.getX() - 1440, (int) allScreenBounds.getY(), allScreenBounds.width, allScreenBounds.height));
-				ImageIO.write(screenShot, "png", new File(checkOSName() + "tempShot.png"));
-			}
-		} else {
-			Thread.sleep(300);
-			BufferedImage screenShot = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
-			ImageIO.write(screenShot, "png", new File(checkOSName() + "tempShot.png"));
+		int width = 0, height = 0, x = 0, y = 0;
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice[] gs = ge.getScreenDevices();
+		for (GraphicsDevice curGs : gs) {
+			GraphicsConfiguration sc = curGs.getDefaultConfiguration();
+			DisplayMode mode = curGs.getDisplayMode();
+			width += mode.getWidth();
+			height = mode.getHeight();
+			if(sc.getBounds().getX() < x) x = (int)sc.getBounds().getX();
+			if(sc.getBounds().getY() < y) y = (int)sc.getBounds().getY();
 		}
+		BufferedImage screenShot = new Robot().createScreenCapture(new Rectangle((int) x, (int) y, width, height));
+		ImageIO.write(screenShot, "png", new File(checkOSName() + "tempShot.png"));
+		
 		File f = new File(checkOSName() + "tempShot.png");
-		new regionSelect(f);
+		new regionSelect(f, width, height, x, y);
 	}
 
 	public void takeScreenshot(final String randomName) throws Exception {
